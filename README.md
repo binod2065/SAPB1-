@@ -1,4 +1,4 @@
-# SAPB1-Service Layer
+# SAPB1-Service Layer - Powershell
 SAP b1 PowerShell connect with Service layer in PowerShell (5)
 This Support Only the Powershell widnows - not core or  6 -7.**
 
