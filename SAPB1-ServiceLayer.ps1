@@ -4,27 +4,23 @@ Function PostWebRequest([String] $url, [String] $data , [string]$method,[string]
 {   
 
      if ($url -ne "/Login" -and [string]::IsNullOrEmpty($cookies)){
-
         Write-Host ("No cookies. ")
         return
     } 
     [string]$baseUrl = "https://192.168.0.100:50000/b1s/v2"
     [String]$fullUrl = $baseUrl+$url
-    
-    
+        
     [System.Net.HttpWebRequest] $webRequest = [System.Net.WebRequest]::Create($fullUrl)
+    $webRequest.ServerCertificateValidationCallback =  {$true}
     #$webRequest.Timeout = $timeout
     $webRequest.Method = $method
     $webRequest.ContentType = "application/Json"
     
-    $webRequest.ServerCertificateValidationCallback =  {$true}
-
     if($url -ne "/Login"){
     $webRequest.Headers.Add("Cookie", $cookies)
     }
 
     if ($method -ne "GET"){
-
     $buffer = [System.Text.Encoding]::UTF8.GetBytes($data)
     $webRequest.ContentLength = $buffer.Length;
     $requestStream = $webRequest.GetRequestStream()
@@ -44,18 +40,15 @@ Function PostWebRequest([String] $url, [String] $data , [string]$method,[string]
     }
 
     if($url -ne '/Login'){
-
     $streamReader = New-Object System.IO.StreamReader($webResponse.GetResponseStream())
     $result = $streamReader.ReadToEnd()
     $streamReader.Dispose()
     return $result 
     } 
     else {
-
     $reHead = $webResponse.Headers["Set-Cookie"]
     return $reHead
     }
-    
  }
 
 $body= '{
@@ -77,12 +70,9 @@ $body = '{
 
 $slResponse = PostWebRequest -url "/Items('Testing_From_SL1')" -cookies $cookies -method "PATCH" -data $body
 
-
-
-
 #End Logout after finisng the task
 
-PostWebRequest -url "/Logout" -cookies $cookies -method "POST" -data $body
+PostWebRequest -url "/Logout" -cookies $cookies -method "POST"
 
 Clear-Variable body
 Clear-Variable cookies
