@@ -54,7 +54,7 @@ Function PostWebRequest([String] $url, [String] $data , [string]$method,[string]
 $body= '{
     "CompanyDB" : "<CompanyDB>",
     "UserName" : "<User>",
-    "Password: "<Password>"
+    "Password": "<Password>"
   }'
 
 # Loging to the Service layer With creadentials and Company
